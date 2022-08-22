@@ -1,14 +1,11 @@
 package com.techconative.inmemory.pagination.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techconative.inmemory.pagination.core.IPaginationService;
 import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,14 +25,18 @@ public abstract class PaginationService<T> implements IPaginationService {
 
 
         //Step 1 : Apply filtering
-        List<Map<String,String>> filteredList = applyFiltering(criteria,rawData);
-
+        //filter=firstName:krishnan~lastname:gopal
+        // multiMedia.name = krishnan and lastname = gopal
+        if( criteria.getFilter()!=null && !criteria.getFilter().isEmpty())
+            rawData = applyFiltering(criteria,rawData);
 
         //Step 2 : Apply search
-        List<Map<String,String>> searchResultList = applySearch(criteria,filteredList);
+        // query = krishnan | vishnu
+        if( criteria.getQuery()!=null && !criteria.getQuery().isEmpty())
+            rawData = applySearch(criteria,rawData);
 
         //Step 3 : Apply sorting
-        LinkedList<Map<String,String>> sortedList = applySorting(criteria, searchResultList);
+        LinkedList<Map<String,String>> sortedList = applySorting(criteria, rawData);
 
         //Step 4 : Apply limit and offset
         LinkedList<Map<String,String>> resultList =  applyPagination(criteria,sortedList);
@@ -88,8 +89,10 @@ public abstract class PaginationService<T> implements IPaginationService {
     }
 
     private LinkedList applyPagination(PaginationCriteria criteria, LinkedList sortedList) {
+        if(criteria.getLimit() <= 0){
+            return sortedList;
+        }
         int skipCount = (criteria.getPageNumber() - 1) * criteria.getLimit();
-        System.out.println("skipcount = " + skipCount);
         return (LinkedList) sortedList.stream().skip(skipCount).limit(criteria.getLimit()).collect(Collectors.toCollection(LinkedList::new));
     }
 

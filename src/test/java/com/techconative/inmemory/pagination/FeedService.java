@@ -1,7 +1,6 @@
 package com.techconative.inmemory.pagination;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techconative.inmemory.pagination.core.IPaginationService;
 import com.techconative.inmemory.pagination.modal.Feed;
@@ -10,12 +9,7 @@ import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 import com.techconative.inmemory.pagination.service.PaginationService;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -45,6 +39,8 @@ public class FeedService extends PaginationService<Feed> {
         criteria.setColumn("id");
         criteria.setSort(OrderingCriteria.ASC);
         criteria.setPageNumber(1);
+        //https://www.abc.com/users?filter=multimedia.name:krishnan~lastname:gopal&query=techconative&column=email&order=desc
+        //criteria.setFilter("firstname:krishnan~lastname:gopal");
 
         PageResult pageResult = t.getPageResult(criteria);
 
