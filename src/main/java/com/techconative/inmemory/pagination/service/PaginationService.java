@@ -32,10 +32,10 @@ public abstract class PaginationService<T> implements IPaginationService {
 
 
         //Step 2 : Apply search
-        applySearch(criteria,filteredList);
+        List<Map<String,String>> searchResultList = applySearch(criteria,filteredList);
 
         //Step 3 : Apply sorting
-        LinkedList<Map<String,String>> sortedList = applySorting(criteria, filteredList);
+        LinkedList<Map<String,String>> sortedList = applySorting(criteria, searchResultList);
 
         //Step 4 : Apply limit and offset
         LinkedList<Map<String,String>> resultList =  applyPagination(criteria,sortedList);
@@ -54,18 +54,14 @@ public abstract class PaginationService<T> implements IPaginationService {
 
     private List<Map<String, String>> convert(List rawData){
         return rawData.stream().map(item-> {
-            try {
-                return objectMapper.readValue(item.toString(),new TypeReference<Map<String,String>>(){});
-            }
-            catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+            return objectMapper.convertValue(item,Map.class);
         }).toList();
     }
     private List<Map<String, String>> applyFiltering(PaginationCriteria criteria, List<Map<String,String>> rawData) {
 
         //rawData.stream().anyMatch(map -> map.containsValue(criteria.get))
-        return null;
+        //TODO : filter the values based on the cirteria and return the list.
+        return rawData;
     }
 
 
@@ -73,24 +69,27 @@ public abstract class PaginationService<T> implements IPaginationService {
         LinkedList<Map<String, String>> sortedList = null;
         if(criteria.getSort().equals(OrderingCriteria.DESC)){
             sortedList = filteredList.stream()
-                    .sorted(Comparator.comparing(m -> m.get(criteria.getColumn()),
+                    .sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())),
                                                  Comparator.nullsFirst(Comparator.reverseOrder()))).collect(
                             Collectors.toCollection(LinkedList::new));
         }
         else{
-            sortedList = filteredList.stream().sorted(Comparator.comparing(m ->m.get(criteria.getColumn()),
+            sortedList = filteredList.stream().sorted(Comparator.comparing(m ->String.valueOf(m.get(criteria.getColumn())),
                                                               Comparator.nullsFirst(Comparator.naturalOrder()))).collect(
                     Collectors.toCollection(LinkedList::new));
         }
         return sortedList;
     }
 
-    private void applySearch(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
+    private List<Map<String, String>> applySearch(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
 
+        //TODO: serach for the result based on criteria and return the list
+        return filteredList;
     }
 
     private LinkedList applyPagination(PaginationCriteria criteria, LinkedList sortedList) {
         int skipCount = (criteria.getPageNumber() - 1) * criteria.getLimit();
+        System.out.println("skipcount = " + skipCount);
         return (LinkedList) sortedList.stream().skip(skipCount).limit(criteria.getLimit()).collect(Collectors.toCollection(LinkedList::new));
     }
 
