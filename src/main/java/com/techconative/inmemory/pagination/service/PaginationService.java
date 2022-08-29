@@ -1,6 +1,7 @@
 package com.techconative.inmemory.pagination.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.techconative.inmemory.pagination.core.IPaginationService;
 import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
@@ -34,8 +35,7 @@ public abstract class PaginationService<T> implements IPaginationService {
 
         //Step 2 : Apply search
         // query = krishnan | vishnu
-        if (criteria.getQuery() != null && !criteria.getQuery().isEmpty())
-            rawData = applySearch(criteria, rawData);
+        if (criteria.getQuery() != null && !criteria.getQuery().isEmpty()) rawData = applySearch(criteria, rawData);
 
         //Step 3 : Apply sorting
         LinkedList<Map<String, String>> sortedList = applySorting(criteria, rawData);
@@ -55,6 +55,9 @@ public abstract class PaginationService<T> implements IPaginationService {
 
 
     private List<Map<String, String>> convert(List rawData) {
+
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
         return rawData.stream().map(item -> objectMapper.convertValue(item, Map.class)).toList();
     }
 
@@ -64,13 +67,14 @@ public abstract class PaginationService<T> implements IPaginationService {
 
         return rawData.stream()
                 .filter(row ->
-                        filterMap.entrySet().stream().allMatch(e -> e.getValue().equals(row.get(e.getKey()))))
+                        filterMap.entrySet().stream()
+                                .allMatch(e -> String.valueOf(row.get(e.getKey())).equals(e.getValue())))
                 .toList();
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
         return Stream.of(filter.split("~"))
-                .map(str -> str.split(":"))
+                .map(str -> str.split("#"))
                 .collect(Collectors.toMap(str -> str[0], str -> str[1]));
     }
 
