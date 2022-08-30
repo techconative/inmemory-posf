@@ -6,11 +6,11 @@ import com.techconative.inmemory.pagination.core.IPaginationService;
 import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
+import exception.InvalidCriteriaException;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,14 +68,28 @@ public abstract class PaginationService<T> implements IPaginationService {
         return rawData.stream()
                 .filter(row ->
                         filterMap.entrySet().stream()
-                                .allMatch(e -> String.valueOf(row.get(e.getKey())).equals(e.getValue())))
+                                .allMatch(e -> getNestedValue(e.getKey(), row).equals(e.getValue())))
                 .toList();
     }
 
+    private static String getNestedValue(String masterKey , Map<String, String> row) {
+        Object finalValue = row;
+        String[] keys = masterKey.split("/");
+        for (String key : keys) {
+            finalValue = ((LinkedHashMap)finalValue).get(key); // what if this returns an array ? iterate....
+        }
+        return finalValue.toString();
+    }
+
     public static Map<String, String> convertFilterCriteria(String filter) {
-        return Stream.of(filter.split("~"))
-                .map(str -> str.split("#"))
-                .collect(Collectors.toMap(str -> str[0], str -> str[1]));
+        try {
+            return Stream.of(filter.split("~"))
+                    .map(str -> str.split("#"))
+                    .collect(Collectors.toMap(str -> str[0], str -> str[1]));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Invalid input. Exception occurred.");
+            throw new InvalidCriteriaException("Invalid input criteria. Exception processing filter criteria.", e);
+        }
     }
 
     private LinkedList<Map<String, String>> applySorting(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
