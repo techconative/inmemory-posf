@@ -42,7 +42,7 @@ public class FeedService extends PaginationService<Feed> {
 //        criteria.setFilter("title:QQQ~name:bharath~userId:4051");
 //        criteria.setFilter("Gender:Male~State:Ohio");
 //        criteria.setFilter("likeDislike/userAction#2");
-        criteria.setFilter("multiMedia/name#AAAA");
+        criteria.setFilter("multiMedia/name#AAAA~title#QQQ");
         criteria.setLimit(10);
         criteria.setColumn("id");
         criteria.setSort(OrderingCriteria.ASC);

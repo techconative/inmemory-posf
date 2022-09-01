@@ -74,19 +74,26 @@ public abstract class PaginationService<T> implements IPaginationService {
     private static List<Object> getValuesList(String masterKey, Object values) {
         String[] keys = masterKey.split("/");
         List<Object> valueList = new ArrayList<>();
-        if(values instanceof ArrayList<?>) {
-            valueList.addAll((List<Object>) values);
+        if (values instanceof ArrayList<?> listOfValues) {
+            valueList.addAll(listOfValues);
         } else {
             valueList.add(values);
         }
         valueList = (valueList).stream()
-                .flatMap(e -> Stream.of(((LinkedHashMap) e).get(keys[0])))
-                .map(obj->((ArrayList)obj).get(0))
+                .map(e -> ((LinkedHashMap) e).get(keys[0]))
+                .map(PaginationService::removeDeepNesting)
                 .collect(Collectors.toList());
-        if( keys.length > 1 ) {
+        if (keys.length > 1) {
             valueList = getValuesList(keys[1], valueList);
         }
         return valueList;
+    }
+
+    private static Object removeDeepNesting(Object obj) {
+        if (obj instanceof ArrayList<?> list) {
+            return list.get(0);
+        }
+        return obj;
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
