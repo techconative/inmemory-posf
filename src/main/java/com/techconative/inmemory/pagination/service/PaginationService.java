@@ -60,9 +60,7 @@ public abstract class PaginationService<T> implements IPaginationService {
     }
 
     private List<Map<String, String>> applyFiltering(PaginationCriteria criteria, List<Map<String, String>> rawData) {
-
         Map<String, String> filterMap = convertFilterCriteria(criteria.getFilter());
-
         return rawData.stream()
                 .filter(row ->
                         filterMap.entrySet().stream()
@@ -75,25 +73,21 @@ public abstract class PaginationService<T> implements IPaginationService {
         String[] keys = masterKey.split("/");
         List<Object> valueList = new ArrayList<>();
         if (values instanceof ArrayList<?> listOfValues) {
-            valueList.addAll(listOfValues);
+            valueList = (listOfValues).stream()
+                    .map(e -> ((LinkedHashMap) e).get(keys[0]))
+                    .collect(Collectors.toList());
         } else {
-            valueList.add(values);
+            Object temp = ((LinkedHashMap) values).get(keys[0]);
+            if (temp instanceof ArrayList<?>) {
+                valueList.addAll((List) temp);
+            } else {
+                valueList.add(temp);
+            }
         }
-        valueList = (valueList).stream()
-                .map(e -> ((LinkedHashMap) e).get(keys[0]))
-                .map(PaginationService::removeDeepNesting)
-                .collect(Collectors.toList());
         if (keys.length > 1) {
             valueList = getValuesList(keys[1], valueList);
         }
         return valueList;
-    }
-
-    private static Object removeDeepNesting(Object obj) {
-        if (obj instanceof ArrayList<?> list) {
-            return list.get(0);
-        }
-        return obj;
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
