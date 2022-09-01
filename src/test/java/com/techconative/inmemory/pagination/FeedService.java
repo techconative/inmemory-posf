@@ -38,9 +38,10 @@ public class FeedService extends PaginationService<Feed> {
 //        criteria.setFilter("title#QQQ~name#bharath~createdAt#2020-01-02T10:41:58.617+00:00");
 //        criteria.setFilter("createdAt:2020-01");
 //        criteria.setFilter("title:QQQ~name:bharath~msg:null");
+//        criteria.setFilter("title#QQQ");
 //        criteria.setFilter("title:QQQ~name:bharath~createdAt:2020-01-02T10:41:58.6177919+00:00");
-//        criteria.setFilter("title:QQQ~name:bharath~userId:4051");
-//        criteria.setFilter("Gender:Male~State:Ohio");
+//        criteria.setFilter("userId#4051");
+//        criteria.setFilter("Gender#Male~State#Ohio");
 //        criteria.setFilter("likeDislike/userAction#2");
         criteria.setFilter("multiMedia/name#AAAA~title#QQQ");
         criteria.setLimit(10);
