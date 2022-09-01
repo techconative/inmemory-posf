@@ -7,8 +7,6 @@ import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 import exception.InvalidCriteriaException;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,17 +66,27 @@ public abstract class PaginationService<T> implements IPaginationService {
         return rawData.stream()
                 .filter(row ->
                         filterMap.entrySet().stream()
-                                .allMatch(e -> getNestedValue(e.getKey(), row).equals(e.getValue())))
+                                .allMatch(e -> getValuesList(e.getKey(), row).stream()
+                                        .anyMatch(obj -> String.valueOf(obj).equals(e.getValue()))))
                 .toList();
     }
 
-    private static String getNestedValue(String masterKey , Map<String, String> row) {
-        Object finalValue = row;
+    private static List<Object> getValuesList(String masterKey, Object values) {
         String[] keys = masterKey.split("/");
-        for (String key : keys) {
-            finalValue = ((LinkedHashMap)finalValue).get(key); // what if this returns an array ? iterate....
+        List<Object> valueList = new ArrayList<>();
+        if(values instanceof ArrayList<?>) {
+            valueList.addAll((List<Object>) values);
+        } else {
+            valueList.add(values);
         }
-        return finalValue.toString();
+        valueList = (valueList).stream()
+                .flatMap(e -> Stream.of(((LinkedHashMap) e).get(keys[0])))
+                .map(obj->((ArrayList)obj).get(0))
+                .collect(Collectors.toList());
+        if( keys.length > 1 ) {
+            valueList = getValuesList(keys[1], valueList);
+        }
+        return valueList;
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
