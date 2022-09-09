@@ -28,12 +28,16 @@ public abstract class PaginationService<T> implements IPaginationService {
         //Step 1 : Apply filtering
         //filter=firstName:krishnan~lastname:gopal
         // multiMedia.name = krishnan and lastname = gopal
-        if (criteria.getFilter() != null && !criteria.getFilter().isEmpty())
+        if (criteria.getFilter() != null && !criteria.getFilter().isEmpty()) {
             rawData = applyFiltering(criteria, rawData);
+        }
 
         //Step 2 : Apply search
         // query = krishnan | vishnu
-        if (criteria.getQuery() != null && !criteria.getQuery().isEmpty()) rawData = applySearch(criteria, rawData);
+//        if (criteria.getQuery() != null && !criteria.getQuery().isEmpty()) {
+//            rawData = applySearch(criteria, rawData);
+//        }
+
 
         //Step 3 : Apply sorting
         LinkedList<Map<String, String>> sortedList = applySorting(criteria, rawData);
@@ -61,40 +65,60 @@ public abstract class PaginationService<T> implements IPaginationService {
 
     private List<Map<String, String>> applyFiltering(PaginationCriteria criteria, List<Map<String, String>> rawData) {
         Map<String, String> filterMap = convertFilterCriteria(criteria.getFilter());
-        return rawData.stream()
-                .filter(row ->
-                        filterMap.entrySet().stream()
-                                .allMatch(e -> getValuesList(e.getKey(), row).stream()
-                                        .anyMatch(obj -> String.valueOf(obj).equals(e.getValue()))))
-                .toList();
+        return rawData.stream().filter(row -> filterRow(row, filterMap)).toList();
     }
 
-    private static List<Object> getValuesList(String masterKey, Object values) {
-        String[] keys = masterKey.split("/");
-        List<Object> valueList = new ArrayList<>();
-        if (values instanceof ArrayList<?> listOfValues) {
-            valueList = (listOfValues).stream()
-                    .map(e -> ((LinkedHashMap) e).get(keys[0]))
-                    .collect(Collectors.toList());
-        } else {
-            Object temp = ((LinkedHashMap) values).get(keys[0]);
-            if (temp instanceof ArrayList<?>) {
-                valueList.addAll((List) temp);
+    private boolean filterRow(Map<String, String> row, Map<String, String> criteriaMap) {
+        return criteriaMap.entrySet().stream().allMatch(e -> matchRow(e.getKey(), e.getValue(), row));
+    }
+
+    private static boolean matchRow(String masterKey, String value, Object row) {
+        if (masterKey.equals("*")) {
+            return searchForValue(value, row);
+        }
+        String[] keys = masterKey.split("\\.", 2);
+        if (keys[0].equals("[]")) {
+            if (row instanceof ArrayList<?> listOfValues) {
+                return (listOfValues).stream().anyMatch(obj -> matchRow(keys[1], value, obj));
             } else {
-                valueList.add(temp);
+                throw new InvalidCriteriaException("Array not found.");
+            }
+        } else {
+            if (keys.length == 1) {
+                return checkEquality("equals", ((LinkedHashMap<?, ?>)row).get(keys[0]).toString(), value);
+            } else {
+                return matchRow(keys[1], value, ((LinkedHashMap<?, ?>)row).get(keys[0]));
             }
         }
-        if (keys.length > 1) {
-            valueList = getValuesList(keys[1], valueList);
+    }
+
+    private static boolean searchForValue(String value, Object row) {
+        if (row instanceof ArrayList<?> listOfValues) {
+            return (listOfValues).stream().anyMatch(obj -> searchForValue(value, obj));
+        } else if (row instanceof LinkedHashMap<?, ?> mapOfValues) {
+            return (mapOfValues).values().stream().anyMatch(entry -> searchForValue(value, entry));
+        } else {
+            if(row != null) {
+                return Arrays.stream(value.split("\\|")).anyMatch(v -> checkEquality("contains", row.toString(), v));
+            }
+            return false;
         }
-        return valueList;
+    }
+
+    private static boolean checkEquality(String op, String v1, String v2) {
+        if (op.equals("equals")) {
+            return v1.equals(v2);
+        } else if (op.contains("contains")) {
+            return v1.contains(v2);
+        }
+        return false;
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
         try {
-            return Stream.of(filter.split("~"))
-                    .map(str -> str.split("#"))
-                    .collect(Collectors.toMap(str -> str[0], str -> str[1]));
+            //TODO: in case of duplicate keys, only the first occurrence is used
+            //TODO: implement filtering by multiple value in a given column using OR ?
+            return Stream.of(filter.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(str -> str[0], str -> str[1], (a, b) -> a, LinkedHashMap::new));
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Invalid input. Exception occurred.");
             throw new InvalidCriteriaException("Invalid input criteria. Exception processing filter criteria.", e);
@@ -104,14 +128,9 @@ public abstract class PaginationService<T> implements IPaginationService {
     private LinkedList<Map<String, String>> applySorting(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
         LinkedList<Map<String, String>> sortedList = null;
         if (criteria.getSort().equals(OrderingCriteria.DESC)) {
-            sortedList = filteredList.stream()
-                    .sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())),
-                            Comparator.nullsFirst(Comparator.reverseOrder()))).collect(
-                            Collectors.toCollection(LinkedList::new));
+            sortedList = filteredList.stream().sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())), Comparator.nullsFirst(Comparator.reverseOrder()))).collect(Collectors.toCollection(LinkedList::new));
         } else {
-            sortedList = filteredList.stream().sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())),
-                    Comparator.nullsFirst(Comparator.naturalOrder()))).collect(
-                    Collectors.toCollection(LinkedList::new));
+            sortedList = filteredList.stream().sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())), Comparator.nullsFirst(Comparator.naturalOrder()))).collect(Collectors.toCollection(LinkedList::new));
         }
         return sortedList;
     }
