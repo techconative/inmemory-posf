@@ -1,8 +1,12 @@
 package com.techconative.inmemory.pagination.modal;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.LinkedList;
 
 
+@Getter @Setter
 public class PageResult<T> {
 
     /**
@@ -30,63 +34,4 @@ public class PageResult<T> {
      */
     private int filteredCount;
 
-
-    public int getTotalCount() {
-
-        return totalCount;
-    }
-
-
-    public void setTotalCount(int totalCount) {
-
-        this.totalCount = totalCount;
-    }
-
-
-    public LinkedList<T> getData() {
-
-        return data;
-    }
-
-
-    public void setData(LinkedList<T> data) {
-
-        this.data = data;
-    }
-
-
-    public int getLimit() {
-
-        return limit;
-    }
-
-
-    public void setLimit(int limit) {
-
-        this.limit = limit;
-    }
-
-
-    public int getPageNumber() {
-
-        return pageNumber;
-    }
-
-
-    public void setPageNumber(int pageNumber) {
-
-        this.pageNumber = pageNumber;
-    }
-
-
-    public int getFilteredCount() {
-
-        return filteredCount;
-    }
-
-
-    public void setFilteredCount(int filteredCount) {
-
-        this.filteredCount = filteredCount;
-    }
 }
