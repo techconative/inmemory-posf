@@ -7,7 +7,10 @@ import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 
+@Slf4j
 public class StepDefinitions {
 
     PageResult pageResult = null;
@@ -29,21 +32,32 @@ public class StepDefinitions {
     @When("Filtering name {string}")
     public void findByName(String name) {
         criteria.setFilter("name=" + name);
-        pageResult = t.getPageResult(criteria);
     }
 
     @Then("Result size should be {int}")
     public void resultSizeShouldBe(int size) {
-        if (pageResult.getData().size() == size ) {
-            System.out.println("Result equals.");
-        }
-    }
-
-    @When("Nested value multiMedia\\/name is {string}")
-    public void nestedValueMultiMediaNameIs(String arg0) {
-        criteria.setFilter("name#bharath");
         pageResult = t.getPageResult(criteria);
+        Integer resultSize = pageResult.getTotalCount();
+        if ( resultSize == size ) {
+            log.info("Total results found : " + resultSize + ". Matches expected.");
+        } else {
+            log.error("Expected results not found. Test failed.");
+        }
+        Assertions.assertEquals(size, resultSize);
     }
 
+    @When("Key value {string} is {string}")
+    public void keyValueIs(String key, String value) {
+        criteria.setFilter(key + "=" + value);
+    }
 
+    @When("Search terms are {string}")
+    public void searchTermsAre(String query) {
+        criteria.setFilter("*=" + query);
+    }
+
+    @When("Complex filtering criteria is {string}")
+    public void complexFilteringCriteriaIs(String query) {
+        criteria.setFilter(query);
+    }
 }

@@ -1,7 +1,21 @@
 # inmemory-pagination
 
+## Filter & Search :
 
-TODO : 
+Filtering is done by column name while search is performed across columns.
+Multiple values can be supplied at the same time.
+
+`&` -> separates column names
+`|` -> separates multiple values
+`*` -> indicates search across all columns
+
+### Examples:
+
+"name=bharath"
+"*=Vega|vegas"
+"multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051"
+
+## TODO : 
 
 1. write logic for filtering
 2. write logic for searching

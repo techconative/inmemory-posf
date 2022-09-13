@@ -8,11 +8,12 @@ import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 import com.techconative.inmemory.pagination.service.PaginationService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
 
-
+@Slf4j
 public class FeedService extends PaginationService<Feed> {
 
     private static ObjectMapper mapper = new ObjectMapper();
@@ -38,7 +39,6 @@ public class FeedService extends PaginationService<Feed> {
 
         criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
 
-
         criteria.setLimit(10);
         criteria.setColumn("id");
         criteria.setSort(OrderingCriteria.ASC);
@@ -48,9 +48,9 @@ public class FeedService extends PaginationService<Feed> {
 
         PageResult pageResult = t.getPageResult(criteria);
 
-        System.out.println("pageResult data = " + pageResult.getData());
-        System.out.println("pageResult size = " + pageResult.getData().size());
-        System.out.println("pageResult total count = " + pageResult.getTotalCount());
+        log.info("pageResult size = " + pageResult.getData().size());
+        log.info("pageResult data = " + pageResult.getData());
+        log.info("pageResult total count = " + pageResult.getTotalCount());
 
     }
 }

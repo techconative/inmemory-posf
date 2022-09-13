@@ -7,12 +7,13 @@ import com.techconative.inmemory.pagination.modal.OrderingCriteria;
 import com.techconative.inmemory.pagination.modal.PageResult;
 import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 import exception.InvalidCriteriaException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+@Slf4j
 public abstract class PaginationService<T> implements IPaginationService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,17 +33,10 @@ public abstract class PaginationService<T> implements IPaginationService {
             rawData = applyFiltering(criteria, rawData);
         }
 
-        //Step 2 : Apply search
-        // query = krishnan | vishnu
-//        if (criteria.getQuery() != null && !criteria.getQuery().isEmpty()) {
-//            rawData = applySearch(criteria, rawData);
-//        }
-
-
-        //Step 3 : Apply sorting
+        //Step 2 : Apply sorting
         LinkedList<Map<String, String>> sortedList = applySorting(criteria, rawData);
 
-        //Step 4 : Apply limit and offset
+        //Step 3 : Apply limit and offset
         LinkedList<Map<String, String>> resultList = applyPagination(criteria, sortedList);
 
 
@@ -99,7 +93,7 @@ public abstract class PaginationService<T> implements IPaginationService {
             return (mapOfValues).values().stream().anyMatch(entry -> searchForValue(value, entry));
         } else {
             if(row != null) {
-                return Arrays.stream(value.split("\\|")).anyMatch(v -> checkEquality("contains", row.toString(), v));
+                return checkEquality("contains", row.toString(), value);
             }
             return false;
         }
@@ -107,9 +101,9 @@ public abstract class PaginationService<T> implements IPaginationService {
 
     private static boolean checkEquality(String op, String v1, String v2) {
         if (op.equals("equals")) {
-            return v1.equals(v2);
+            return Arrays.asList(v2.split("\\|")).contains(v1);
         } else if (op.contains("contains")) {
-            return v1.contains(v2);
+            return Arrays.stream(v2.split("\\|")).anyMatch(v1::contains);
         }
         return false;
     }
@@ -120,7 +114,7 @@ public abstract class PaginationService<T> implements IPaginationService {
             //TODO: implement filtering by multiple value in a given column using OR ?
             return Stream.of(filter.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(str -> str[0], str -> str[1], (a, b) -> a, LinkedHashMap::new));
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Invalid input. Exception occurred.");
+            log.info("Invalid input. Exception occurred.");
             throw new InvalidCriteriaException("Invalid input criteria. Exception processing filter criteria.", e);
         }
     }
@@ -133,12 +127,6 @@ public abstract class PaginationService<T> implements IPaginationService {
             sortedList = filteredList.stream().sorted(Comparator.comparing(m -> String.valueOf(m.get(criteria.getColumn())), Comparator.nullsFirst(Comparator.naturalOrder()))).collect(Collectors.toCollection(LinkedList::new));
         }
         return sortedList;
-    }
-
-    private List<Map<String, String>> applySearch(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
-
-        //TODO: serach for the result based on criteria and return the list
-        return filteredList;
     }
 
     private LinkedList applyPagination(PaginationCriteria criteria, LinkedList sortedList) {
