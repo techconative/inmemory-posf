@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 /**
  * Filter, search, sort and paginate your data.
  * PaginationService is the class to be extended to utilise the library
- * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.</p>
+ * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.
  */
 @Slf4j
 public abstract class PaginationService<T> implements IPaginationService {
