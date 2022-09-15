@@ -79,7 +79,7 @@ public abstract class PaginationService<T> implements IPaginationService {
             }
         } else {
             if (keys.length == 1) {
-                return checkEquality("equals", ((LinkedHashMap<?, ?>)row).get(keys[0]).toString(), value);
+                return checkEquality(((LinkedHashMap<?, ?>)row).get(keys[0]), value);
             } else {
                 return matchRow(keys[1], value, ((LinkedHashMap<?, ?>)row).get(keys[0]));
             }
@@ -93,25 +93,18 @@ public abstract class PaginationService<T> implements IPaginationService {
             return (mapOfValues).values().stream().anyMatch(entry -> searchForValue(value, entry));
         } else {
             if(row != null) {
-                return checkEquality("contains", row.toString(), value);
+                return checkEquality(row, value);
             }
             return false;
         }
     }
 
-    private static boolean checkEquality(String op, String v1, String v2) {
-        if (op.equals("equals")) {
-            return Arrays.asList(v2.split("\\|")).contains(v1);
-        } else if (op.contains("contains")) {
-            return Arrays.stream(v2.split("\\|")).anyMatch(v1::contains);
-        }
-        return false;
+    private static boolean checkEquality(Object v1, String v2) {
+        return Arrays.stream(v2.split("\\|")).anyMatch(v1.toString()::contains);
     }
 
     public static Map<String, String> convertFilterCriteria(String filter) {
         try {
-            //TODO: in case of duplicate keys, only the first occurrence is used
-            //TODO: implement filtering by multiple value in a given column using OR ?
             return Stream.of(filter.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(str -> str[0], str -> str[1], (a, b) -> a, LinkedHashMap::new));
         } catch (ArrayIndexOutOfBoundsException e) {
             log.info("Invalid input. Exception occurred.");
@@ -136,7 +129,6 @@ public abstract class PaginationService<T> implements IPaginationService {
         int skipCount = (criteria.getPageNumber() - 1) * criteria.getLimit();
         return (LinkedList) sortedList.stream().skip(skipCount).limit(criteria.getLimit()).collect(Collectors.toCollection(LinkedList::new));
     }
-
 
     protected abstract List<T> getRawData();
 }
