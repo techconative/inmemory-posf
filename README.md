@@ -1,28 +1,87 @@
-# inmemory-pagination
+# In Memory Pagination
 
-## Filter & Search :
 
-Filtering is done by column name while search is performed across columns.
-Multiple values can be supplied at the same time.
+### Problem Statement
 
-`&` -> separates column names
-`|` -> separates multiple values
-`*` -> indicates search across all columns
+Struck with Database with no filtering and pagination features?.
+UI is feeling Hard to handle bulk of data?.
+We provide you the best solution to overcome these issues with minimal overhead.
 
-### Examples:
+### Solution
 
-"name=bharath"
-"*=Vega|vegas"
-"multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051"
+As we are developing so much software in today’s world and dealing with tons of data.
+Imagine a situation where you have tons of data to show on your web page.
+A browser will have not able to render all the data at one shot.
+So the best option is to go for InMemory pagination, where a server will return the bounded number of rows to show in the UI.
 
-## TODO : 
 
-1. write logic for filtering
-2. write logic for searching
-3. add enough log statement
-4. extend logic to support nested objects ( filtering, search and sort)
-5. create excception class
-6. Throw exception column name is invalid(if column name is not exist)
-7. Write unit testcases (use cucumber)
-8. document on how to use with example
-9. Finally publish to maven central repo
+### How to use this plugin
+
+- This plugin is written in JAVA 17 version.
+- To use this plugin , just extend the class **PaginationService** and override the **getRawData()**  function such that it returns list of desired object.
+- *getRawData()* method will return the complete source data from which the plugin will take care of performing pagination and searching for you.
+
+Sample snippet:
+
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L17-L32
+
+<br> <br>
+
+- Plugin provides two class **PaginationCriteria** and **PageResult**  to utilize the  pagination and filtering features on top of the database.
+
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L1-L37
+
+- *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
+- Limiting the data return  is done through *setLimit* method in *PaginationCriteria* .
+- Data are sorted based on column mentioned in *setColumn* method .
+- Sorting can be done in both way (ascending / descending) and is set using *setSort* method using OrderingCriteria (Enum class that our plugin provides).
+- PageNumber  is set using *setPageNumber* method .
+- Custom Query for Filtering or search can be used with *setFilter* method
+- All these methods can be call through instance of **PaginationCriteria** class.
+
+Sample snippet:
+
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L38-L45
+
+<br> <br>
+
+#### Conventions to follow while setting the custom query
+
+- Search query is set with * in place of column_name unlike we use in filter query.
+
+```java
+ criteria.setFilter("*=4051"); //searching
+```
+
+- For  filter query column name is given inplace of *.
+
+```java
+  criteria.setFilter("userId=4051"); //filtering
+```
+
+- Filtering is done by column name while search is performed across columns. Multiple values can be supplied at the same time.
+
+- & -> separates column names .
+- | -> separates multiple values and * -> indicates search across all columns .
+
+```java
+  criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
+```
+
+> Note:  Custom query and column name in *setColumn* method is passed as string in double quotes.
+
+- Output for the pagination result is returned as  **PageResult** Class .
+
+snippet:
+
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PageResult.java#L1-L37
+
+- Pagination service is called by instantiating object for the class that extends it.
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L36
+
+- pagination criteria is set and passed as argument to Pagination service.
+- Page Result is used to display the resulting desired list of objects.
+
+snippets:
+
+https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L49-L53
