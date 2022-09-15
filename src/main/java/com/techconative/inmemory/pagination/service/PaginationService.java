@@ -13,11 +13,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Filter, search, sort and paginate your data.
+ * PaginationService is the class to be extended to utilise the library
+ * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.</p>
+ */
 @Slf4j
 public abstract class PaginationService<T> implements IPaginationService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * <p>The central method which gets the data and filter, search, sort and paginates based on criteria</p>
+     * @param criteria contains filter, search, sort and pagination constraints
+     * @return PageResult of the provided data as per constraints
+     * @since 1.0.0
+     */
     @Override
     public PageResult getPageResult(PaginationCriteria criteria) {
 
@@ -25,20 +36,13 @@ public abstract class PaginationService<T> implements IPaginationService {
 
         List<Map<String, String>> rawData = convert(getRawData());
 
-
-        //Step 1 : Apply filtering
-        //filter=firstName:krishnan~lastname:gopal
-        // multiMedia.name = krishnan and lastname = gopal
         if (criteria.getFilter() != null && !criteria.getFilter().isEmpty()) {
             rawData = applyFiltering(criteria, rawData);
         }
 
-        //Step 2 : Apply sorting
         LinkedList<Map<String, String>> sortedList = applySorting(criteria, rawData);
 
-        //Step 3 : Apply limit and offset
         LinkedList<Map<String, String>> resultList = applyPagination(criteria, sortedList);
-
 
         pageResult.setData(resultList);
         pageResult.setLimit(criteria.getLimit());
@@ -49,7 +53,12 @@ public abstract class PaginationService<T> implements IPaginationService {
         return pageResult;
     }
 
-
+    /**
+     * <p>Converts user objects to List of Map of Strings</p>
+     * @param rawData List of user object
+     * @return List of Map of Strings
+     * @since 1.0.0
+     */
     private List<Map<String, String>> convert(List rawData) {
 
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -57,15 +66,38 @@ public abstract class PaginationService<T> implements IPaginationService {
         return rawData.stream().map(item -> objectMapper.convertValue(item, Map.class)).toList();
     }
 
+    /**
+     * <p>Filter and search each row of data based on criteria</p>
+     * @param criteria defines the filtering and search column and value
+     * @param rawData provides the data
+     * @return filtered data as per given criteria
+     * @since 1.0.0
+     */
     private List<Map<String, String>> applyFiltering(PaginationCriteria criteria, List<Map<String, String>> rawData) {
         Map<String, String> filterMap = convertFilterCriteria(criteria.getFilter());
         return rawData.stream().filter(row -> filterRow(row, filterMap)).toList();
     }
 
+    /**
+     * <p>Iterates each filter criteria for each given row of data</p>
+     * <p>Row is included in filtered result if all criteria is satisfiend</p>
+     * @param row defines single element in list of data
+     * @param criteriaMap map of all filter and search criteria
+     * @return data after search and  column filtering is applied
+     * @since 1.0.0
+     */
     private boolean filterRow(Map<String, String> row, Map<String, String> criteriaMap) {
         return criteriaMap.entrySet().stream().allMatch(e -> matchRow(e.getKey(), e.getValue(), row));
     }
 
+    /**
+     * <p>Matches each criteria on every row</p>
+     * @param masterKey column name
+     * @param value criteria to be filtered or searched
+     * @param row defines single element in list of data
+     * @return boolean result if criteria value is matched in column
+     * @since 1.0.0
+     */
     private static boolean matchRow(String masterKey, String value, Object row) {
         if (masterKey.equals("*")) {
             return searchForValue(value, row);
@@ -86,6 +118,13 @@ public abstract class PaginationService<T> implements IPaginationService {
         }
     }
 
+    /**
+     * <p>Search for a given value in all columns of data</p>
+     * @param value to be searched for
+     * @param row of the data supplied
+     * @return boolean result whether a row contains the searched value
+     * @since 1.0.0
+     */
     private static boolean searchForValue(String value, Object row) {
         if (row instanceof ArrayList<?> listOfValues) {
             return (listOfValues).stream().anyMatch(obj -> searchForValue(value, obj));
@@ -99,10 +138,23 @@ public abstract class PaginationService<T> implements IPaginationService {
         }
     }
 
+    /**
+     * <p>Checks if supplied value contains the string</p>
+     * @param v1 supplied data to be filtered
+     * @param v2 value being filtered by or searched for
+     * @return boolean result
+     * @since 1.0.0
+     */
     private static boolean checkEquality(Object v1, String v2) {
         return Arrays.stream(v2.split("\\|")).anyMatch(v1.toString()::contains);
     }
 
+    /**
+     * <p>Converts filter and search criteria into Map</p>
+     * @param filter criteria
+     * @return Map of filters to be applied
+     * @since 1.0.0
+     */
     public static Map<String, String> convertFilterCriteria(String filter) {
         try {
             return Stream.of(filter.split("&")).map(str -> str.split("=")).collect(Collectors.toMap(str -> str[0], str -> str[1], (a, b) -> a, LinkedHashMap::new));
@@ -112,6 +164,13 @@ public abstract class PaginationService<T> implements IPaginationService {
         }
     }
 
+    /**
+     * <p>Sorts the data per ordering specified in criteria</p>
+     * @param criteria defines the sorting limit
+     * @param filteredList is the data after filtering
+     * @return List of data
+     * @since 1.0.0
+     */
     private LinkedList<Map<String, String>> applySorting(PaginationCriteria criteria, List<Map<String, String>> filteredList) {
         LinkedList<Map<String, String>> sortedList = null;
         if (criteria.getSort().equals(OrderingCriteria.DESC)) {
@@ -122,6 +181,13 @@ public abstract class PaginationService<T> implements IPaginationService {
         return sortedList;
     }
 
+    /**
+     * <p>Paginates the data per limit specified in criteria</p>
+     * @param criteria defines the pagination limit
+     * @param sortedList is the data after sorting
+     * @return List of data
+     * @since 1.0.0
+     */
     private LinkedList applyPagination(PaginationCriteria criteria, LinkedList sortedList) {
         if (criteria.getLimit() <= 0) {
             return sortedList;
@@ -130,5 +196,10 @@ public abstract class PaginationService<T> implements IPaginationService {
         return (LinkedList) sortedList.stream().skip(skipCount).limit(criteria.getLimit()).collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     * <p>Method to fetch data for processing</p>
+     * @return List of data
+     * @since 1.0.0
+     */
     protected abstract List<T> getRawData();
 }
