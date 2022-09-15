@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import java.util.LinkedList;
 
-
+/**
+ * PageResult class processed data per criteria provided
+ */
 @Getter @Setter
 public class PageResult<T> {
 
