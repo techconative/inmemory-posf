@@ -1,0 +1,118 @@
+[{
+  "id": 1347,
+  "title": "Daily counters",
+  "description": "Shh. Keep it down.",
+  "counters": [
+    {
+      "yearMonth": [
+        {
+          "id": "2022-07",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 10,
+              "dislikes": 7
+            },
+            {
+              "id": "02",
+              "likes": 20,
+              "dislikes": 20
+            }
+          ]
+        },
+        {
+          "id": "2022-08",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 30,
+              "dislikes": 7
+            },
+            {
+              "id": "02",
+              "likes": 20,
+              "dislikes": 40
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "msg": "This is a sample message I am adding for testing."
+},
+{
+  "id": 1347,
+  "title": "Daily counters",
+  "description": "Shh. Keep it down.",
+  "counters": [
+    {
+      "yearMonth": [
+        {
+          "id": "2022-07",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 10,
+              "dislikes": 7
+            },
+            {
+              "id": "02",
+              "likes": 20,
+              "dislikes": 20
+            }
+          ]
+        },
+        {
+          "id": "2022-08",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 30,
+              "dislikes": 7
+            },
+            {
+              "id": "02",
+              "likes": 20,
+              "dislikes": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yearMonth": [
+        {
+          "id": "2022-07",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 10,
+              "dislikes": 17
+            },
+            {
+              "id": "02",
+              "likes": 200,
+              "dislikes": 20
+            }
+          ]
+        },
+        {
+          "id": "2022-08",
+          "dateCounter": [
+            {
+              "id": "01",
+              "likes": 300,
+              "dislikes": 17
+            },
+            {
+              "id": "02",
+              "likes": 30,
+              "dislikes": 70
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "msg": "This is a sample message I am adding for testing."
+}]

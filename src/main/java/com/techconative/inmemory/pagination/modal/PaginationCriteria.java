@@ -4,6 +4,9 @@ package com.techconative.inmemory.pagination.modal;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * PaginationCriteria class contains page, sort, filter and search constraints
+ */
 @Getter @Setter
 public class PaginationCriteria {
 
