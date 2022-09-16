@@ -54,11 +54,6 @@ public class CucumberStepDefinitions {
         criteria.setPageNumber(1);
     }
 
-    @When("Filtering name {string}")
-    public void findByName(String name) {
-        criteria.setFilter("name=" + name);
-    }
-
     @Then("Result size should be {int}")
     public void resultSizeShouldBe(int size) {
         pageResult = t.getPageResult(criteria);

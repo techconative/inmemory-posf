@@ -10,6 +10,7 @@ import exception.InvalidCriteriaException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,7 +112,7 @@ public abstract class PaginationService<T> implements IPaginationService {
             }
         } else {
             if (keys.length == 1) {
-                return checkEquality(((LinkedHashMap<?, ?>)row).get(keys[0]), value);
+                return matchValues(((LinkedHashMap<?, ?>)row).get(keys[0]), value);
             } else {
                 return matchRow(keys[1], value, ((LinkedHashMap<?, ?>)row).get(keys[0]));
             }
@@ -131,22 +132,26 @@ public abstract class PaginationService<T> implements IPaginationService {
         } else if (row instanceof LinkedHashMap<?, ?> mapOfValues) {
             return (mapOfValues).values().stream().anyMatch(entry -> searchForValue(value, entry));
         } else {
-            if(row != null) {
-                return checkEquality(row, value);
-            }
-            return false;
+            return matchValues(row, value);
         }
     }
 
     /**
      * <p>Checks if supplied value contains the string</p>
-     * @param v1 supplied data to be filtered
-     * @param v2 value being filtered by or searched for
+     * @param matcher supplied data to be filtered
+     * @param pattern value being filtered by or searched for
      * @return boolean result
-     * @since 1.0.0
+     * @since 1.0.2
      */
-    private static boolean checkEquality(Object v1, String v2) {
-        return Arrays.stream(v2.split("\\|")).anyMatch(v1.toString()::contains);
+    private static boolean matchValues(Object matcher, String pattern) {
+        if(matcher != null && pattern != null) {
+            return Arrays.stream(pattern.split("\\|"))
+                    .anyMatch(pat ->
+                            Pattern.compile(Pattern.quote(pat), Pattern.CASE_INSENSITIVE)
+                                    .matcher(matcher.toString())
+                                    .find());
+        }
+        return false;
     }
 
     /**
