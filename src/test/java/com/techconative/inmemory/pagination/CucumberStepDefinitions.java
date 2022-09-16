@@ -10,17 +10,42 @@ import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 
+/**
+ * CucumberStepDefinitions contains java implementation for tests written in Cucumber feature file
+ */
 @Slf4j
-public class StepDefinitions {
+public class CucumberStepDefinitions {
 
     PageResult pageResult = null;
     PaginationCriteria criteria = null;
 
     IPaginationService t = null;
 
-    @Given("Feed Rawdata")
-    public void feedRawdata() {
+    @Given("Feed data")
+    public void feedData() {
         t = new FeedService();
+        criteria = new PaginationCriteria();
+
+        criteria.setLimit(10);
+        criteria.setColumn("id");
+        criteria.setSort(OrderingCriteria.ASC);
+        criteria.setPageNumber(1);
+    }
+
+    @Given("Counter Data")
+    public void counterData() {
+        t = new CounterService();
+        criteria = new PaginationCriteria();
+
+        criteria.setLimit(10);
+        criteria.setColumn("id");
+        criteria.setSort(OrderingCriteria.ASC);
+        criteria.setPageNumber(1);
+    }
+
+    @Given("Student Data")
+    public void StudentData() {
+        t = new StudentService();
         criteria = new PaginationCriteria();
 
         criteria.setLimit(10);
