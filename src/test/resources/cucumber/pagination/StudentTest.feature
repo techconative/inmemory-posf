@@ -1,4 +1,4 @@
-Feature: Check for Student MailId
+Feature: Filter on Student data
 
   Scenario: Retrieve mailId of a student
     Given Student Data

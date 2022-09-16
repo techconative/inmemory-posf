@@ -54,16 +54,11 @@ public class CucumberStepDefinitions {
         criteria.setPageNumber(1);
     }
 
-    @When("Filtering name {string}")
-    public void findByName(String name) {
-        criteria.setFilter("name=" + name);
-    }
-
     @Then("Result size should be {int}")
     public void resultSizeShouldBe(int size) {
         pageResult = t.getPageResult(criteria);
         Integer resultSize = pageResult.getTotalCount();
-        if ( resultSize == size ) {
+        if (resultSize == size) {
             log.info("Total results found : " + resultSize + ". Matches expected.");
         } else {
             log.error("Expected results not found. Test failed.");

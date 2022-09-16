@@ -1,8 +1,7 @@
 package com.techconative.inmemory.pagination.modal;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class YearMonth {

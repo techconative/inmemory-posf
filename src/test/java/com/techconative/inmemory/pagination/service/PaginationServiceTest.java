@@ -1,5 +1,3 @@
 package com.techconative.inmemory.pagination.service;
 
-public class PaginationServiceTest {
-
-}
+public class PaginationServiceTest {}
