@@ -1,19 +1,24 @@
-Feature: Filtering
+Feature: Filtering on Feed data
 
   Scenario: Name is bharath
     Given Feed data
-    When Filtering name "bharath"
+    When Key value "name" is "bharath"
     Then Result size should be 1
 
   Scenario: Name is sanjay OR neha
     Given Feed data
-    When Filtering name "sanjay|neha"
+    When Key value "name" is "sanjay|neha"
     Then Result size should be 40
 
   Scenario: Nested value multiMedia.name is "AAAA"
     Given Feed data
     When Key value "multiMedia.[].name" is "AAAA"
     Then Result size should be 3
+
+  Scenario: Search for a URL
+    Given Feed data
+    When Key value "multiMedia.[].url" is "http://www.youtube.com/embed/TUT2-FEPMdc"
+    Then Result size should be 5
 
   Scenario: Search for "Vega|vegas"
     Given Feed data
