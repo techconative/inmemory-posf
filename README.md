@@ -41,7 +41,7 @@ https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5
 
 Sample snippet:
 
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L38-L45
+(https://github.com/techconative/inmemory-pagination/blob/c16d8ee33307156664a961b30813548d922dd37e/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L25-L33)
 
 <br> <br>
 
@@ -63,6 +63,8 @@ https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5
 
 - & -> separates column names .
 - | -> separates multiple values and * -> indicates search across all columns .
+- [] -> is placed after every List.
+- . -> represents nested
 
 ```java
   criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
@@ -77,11 +79,9 @@ snippet:
 https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PageResult.java#L1-L37
 
 - Pagination service is called by instantiating object for the class that extends it.
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L36
-
 - pagination criteria is set and passed as argument to Pagination service.
 - Page Result is used to display the resulting desired list of objects.
 
 snippets:
 
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L49-L53
+https://github.com/techconative/inmemory-pagination/blob/c16d8ee33307156664a961b30813548d922dd37e/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L59-L60
