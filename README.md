@@ -17,7 +17,6 @@ So the best option is to go for InMemory pagination, where a server will return 
 
 ### How to use this plugin
 
-- This plugin is written in JAVA 17 version.
 - To use this plugin , just extend the class **PaginationService** and override the **getRawData()**  function such that it returns list of desired object.
 - *getRawData()* method will return the complete source data from which the plugin will take care of performing pagination and searching for you.
 
