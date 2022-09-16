@@ -11,6 +11,8 @@ public class Student {
     public String lastName;
     @JsonProperty("FirstName")
     public String firstName;
+    @JsonProperty("Email")
+    public String mail;
     @JsonProperty("City")
     public String city;
     @JsonProperty("State")
@@ -92,6 +94,14 @@ public class Student {
         this.state = state;
     }
 
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public String getGender() {
 

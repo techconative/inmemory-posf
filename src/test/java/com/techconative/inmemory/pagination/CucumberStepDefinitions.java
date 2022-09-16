@@ -43,6 +43,17 @@ public class CucumberStepDefinitions {
         criteria.setPageNumber(1);
     }
 
+    @Given("Student Data")
+    public void StudentData() {
+        t = new StudentService();
+        criteria = new PaginationCriteria();
+
+        criteria.setLimit(10);
+        criteria.setColumn("id");
+        criteria.setSort(OrderingCriteria.ASC);
+        criteria.setPageNumber(1);
+    }
+
     @When("Filtering name {string}")
     public void findByName(String name) {
         criteria.setFilter("name=" + name);
