@@ -53,12 +53,7 @@ public abstract class PaginationService<T> implements IPaginationService {
         return pageResult;
     }
 
-    /**
-     * <p>Converts user objects to List of Map of Strings</p>
-     * @param rawData List of user object
-     * @return List of Map of Strings
-     * @since 1.0.0
-     */
+
     private List<Map<String, String>> convert(List rawData) {
 
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
