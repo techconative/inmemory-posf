@@ -45,13 +45,16 @@ Sample snippet:
 
 <br> <br>
 
-#### Conventions to follow while setting the custom query
+### Conventions to follow while setting the custom query for searching
 
 - Search query is set with * in place of column_name unlike we use in filter query.
 
 ```java
  criteria.setFilter("*=4051"); //searching
+ criteria.setFilter("*=4051|5021"); //searching multiple values using or
 ```
+
+### Conventions to follow while setting the custom query for filtering
 
 - For  filter query column name is given inplace of *.
 
@@ -69,8 +72,21 @@ Sample snippet:
 ```java
   criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
 ```
+### Conventions to follow while setting the custom query for sorting
+
+
+```java
+   criteria.setSort(OrderingCriteria.ASC);   /// OrderingCriteria.DESC for descending
+```
 
 > Note:  Custom query and column name in *setColumn* method is passed as string in double quotes.
+
+### Conventions to follow while setting the custom query for pagination and result
+
+```java
+ criteria.setLimit(10);
+ criteria.setPageNumber(1);
+```
 
 - Output for the pagination result is returned as  **PageResult** Class .
 
