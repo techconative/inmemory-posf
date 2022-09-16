@@ -67,7 +67,10 @@ public abstract class PaginationService<T> implements IPaginationService {
 
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        return rawData.stream().map(item -> objectMapper.convertValue(item, Map.class)).toList();
+        return (List<Map<String, String>>)
+                rawData.stream()
+                        .map(item -> objectMapper.convertValue(item, Map.class))
+                        .collect(Collectors.toList());
     }
 
     /**
@@ -81,7 +84,9 @@ public abstract class PaginationService<T> implements IPaginationService {
     private List<Map<String, String>> applyFiltering(
             PaginationCriteria criteria, List<Map<String, String>> rawData) {
         Map<String, String> filterMap = convertFilterCriteria(criteria.getFilter());
-        return rawData.stream().filter(row -> filterRow(row, filterMap)).toList();
+        return rawData.stream()
+                .filter(row -> filterRow(row, filterMap))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -100,7 +105,7 @@ public abstract class PaginationService<T> implements IPaginationService {
     }
 
     /**
-     * Matches each criteria on every row
+     * Matches each criterion on every row
      *
      * @param masterKey column name
      * @param value criteria to be filtered or searched
@@ -114,8 +119,8 @@ public abstract class PaginationService<T> implements IPaginationService {
         }
         String[] keys = masterKey.split("\\.", 2);
         if (keys[0].equals("[]")) {
-            if (row instanceof ArrayList<?> listOfValues) {
-                return (listOfValues).stream().anyMatch(obj -> matchRow(keys[1], value, obj));
+            if (row instanceof ArrayList<?>) {
+                return ((List) row).stream().anyMatch(obj -> matchRow(keys[1], value, obj));
             } else {
                 throw new InvalidCriteriaException("Array not found.");
             }
@@ -137,10 +142,11 @@ public abstract class PaginationService<T> implements IPaginationService {
      * @since 1.0.0
      */
     private static boolean searchForValue(String value, Object row) {
-        if (row instanceof ArrayList<?> listOfValues) {
-            return (listOfValues).stream().anyMatch(obj -> searchForValue(value, obj));
-        } else if (row instanceof LinkedHashMap<?, ?> mapOfValues) {
-            return (mapOfValues).values().stream().anyMatch(entry -> searchForValue(value, entry));
+        if (row instanceof ArrayList<?>) {
+            return ((List) row).stream().anyMatch(obj -> searchForValue(value, obj));
+        } else if (row instanceof LinkedHashMap<?, ?>) {
+            return ((LinkedHashMap) row)
+                    .values().stream().anyMatch(entry -> searchForValue(value, entry));
         } else {
             return matchValues(row, value);
         }
