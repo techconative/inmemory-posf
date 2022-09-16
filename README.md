@@ -3,7 +3,7 @@
 
 ### Problem Statement
 
-Struck with Database with no filtering and pagination features?.
+Struck with Database with no filtering,searching and pagination features?.
 UI is feeling Hard to handle bulk of data?.
 We provide you the best solution to overcome these issues with minimal overhead.
 
@@ -34,9 +34,9 @@ https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5
 - *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
 - Limiting the data return  is done through *setLimit* method in *PaginationCriteria* .
 - Data are sorted based on column mentioned in *setColumn* method .
-- Sorting can be done in both way (ascending / descending) and is set using *setSort* method using OrderingCriteria (Enum class that our plugin provides).
+- ***Sorting*** can be done in both way (ascending / descending) and is set using *setSort* method using OrderingCriteria (Enum class that our plugin provides).
 - PageNumber  is set using *setPageNumber* method .
-- Custom Query for Filtering or search can be used with *setFilter* method
+- Custom Query for ***Filtering*** or ***searching*** can be used with *setFilter* method
 - All these methods can be call through instance of **PaginationCriteria** class.
 
 Sample snippet:
