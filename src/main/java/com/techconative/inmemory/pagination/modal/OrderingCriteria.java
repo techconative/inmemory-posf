@@ -1,17 +1,11 @@
 package com.techconative.inmemory.pagination.modal;
 
-/**
- * Order Criteria for sorting of data
- */
+/** Order Criteria for sorting of data */
 public enum OrderingCriteria {
 
-    /**
-     * Sort data in ascending
-     */
+    /** Sort data in ascending */
     ASC,
 
-    /**
-     * Sort data in descending
-     */
+    /** Sort data in descending */
     DESC
 }

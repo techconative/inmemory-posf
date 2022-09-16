@@ -58,7 +58,7 @@ public class CucumberStepDefinitions {
     public void resultSizeShouldBe(int size) {
         pageResult = t.getPageResult(criteria);
         Integer resultSize = pageResult.getTotalCount();
-        if ( resultSize == size ) {
+        if (resultSize == size) {
             log.info("Total results found : " + resultSize + ". Matches expected.");
         } else {
             log.error("Expected results not found. Test failed.");
