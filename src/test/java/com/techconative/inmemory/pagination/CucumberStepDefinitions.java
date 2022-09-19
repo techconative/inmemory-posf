@@ -26,7 +26,7 @@ public class CucumberStepDefinitions {
         t = new FeedService();
         criteria = new PaginationCriteria();
 
-        criteria.setLimit(10);
+        criteria.setLimit(100);
         criteria.setColumn("id");
         criteria.setSort(OrderingCriteria.ASC);
         criteria.setPageNumber(1);
@@ -57,7 +57,7 @@ public class CucumberStepDefinitions {
     @Then("Result size should be {int}")
     public void resultSizeShouldBe(int size) {
         pageResult = t.getPageResult(criteria);
-        Integer resultSize = pageResult.getTotalCount();
+        Integer resultSize = pageResult.getFilteredCount();
         if (resultSize == size) {
             log.info("Total results found : " + resultSize + ". Matches expected.");
         } else {
