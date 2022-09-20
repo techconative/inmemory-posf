@@ -11,8 +11,7 @@ import com.techconative.inmemory.pagination.modal.PaginationCriteria;
 public interface IPaginationService {
 
     /**
-     * The central method which gets the data and filter, search, sort and paginates based on
-     * criteria
+     * The central method to extend the library as a service.
      *
      * @param criteria contains filter, search, sort and pagination constraints
      * @return PageResult of the provided data as per constraints
