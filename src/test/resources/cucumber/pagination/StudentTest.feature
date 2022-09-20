@@ -5,4 +5,4 @@ Feature: Filter on Student data
     And Default Criteria
     When "Email" has "Student11@gmail.com"
     Then Result size should be 1
-    And "ID" present in "11"
+    And Object identifier "ID" is present in "11"

@@ -75,12 +75,14 @@ public class CucumberStepDefinitions {
         criteria.setFilter(query);
     }
 
-    @And("{string} present in {string}")
-    public void objidPresentInExpectedObjs(String objId, String expectedObjects) {
-        ArrayList resultantList = (ArrayList) pageResult.getData().stream().map(row -> ((LinkedHashMap) row).get(objId).toString()).collect(Collectors.toList());
+    @And("Object identifier {string} is present in {string}")
+    public void objectIdentifierObjIDIsPresentInExpectedObjsList(String objId, String expectedObjects) {
+        List resultantList = (ArrayList) pageResult.getData().stream()
+                .map(row -> ((LinkedHashMap) row).get(objId).toString())
+                .collect(Collectors.toList());
         if (resultantList.size() > 0) {
             List<String> expectedObjsList = Arrays.stream(expectedObjects.split(",")).sorted().collect(Collectors.toList());
-            Assertions.assertTrue(resultantList.equals(expectedObjsList));
+            Assertions.assertEquals(resultantList, expectedObjsList);
         }
     }
 

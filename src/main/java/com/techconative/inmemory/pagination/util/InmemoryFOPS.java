@@ -37,9 +37,9 @@ public class InmemoryFOPS {
             data = applyFiltering(criteria, data);
         }
 
-        LinkedList<Map<String, String>> sortedList = applySorting(criteria, data);
+        List<Map<String, String>> sortedList = applySorting(criteria, data);
 
-        LinkedList resultList = applyPagination(criteria, sortedList);
+        List resultList = applyPagination(criteria, sortedList);
 
         PageResult pageResult = new PageResult();
         pageResult.setData(resultList);
@@ -206,27 +206,23 @@ public class InmemoryFOPS {
      * @return List of data
      * @since 1.0.0
      */
-    private static LinkedList<Map<String, String>> applySorting(
+    private static List<Map<String, String>> applySorting(
             PaginationCriteria criteria, List<Map<String, String>> filteredList) {
-        LinkedList<Map<String, String>> sortedList = null;
         if (criteria.getSort().equals(OrderingCriteria.DESC)) {
-            sortedList =
-                    filteredList.stream()
+            return filteredList.stream()
                             .sorted(
                                     Comparator.comparing(
                                             m -> String.valueOf(m.get(criteria.getColumn())),
                                             Comparator.nullsFirst(Comparator.reverseOrder())))
-                            .collect(Collectors.toCollection(LinkedList::new));
+                            .collect(Collectors.toList());
         } else {
-            sortedList =
-                    filteredList.stream()
+            return filteredList.stream()
                             .sorted(
                                     Comparator.comparing(
                                             m -> String.valueOf(m.get(criteria.getColumn())),
                                             Comparator.nullsFirst(Comparator.naturalOrder())))
-                            .collect(Collectors.toCollection(LinkedList::new));
+                            .collect(Collectors.toList());
         }
-        return sortedList;
     }
 
     /**
@@ -237,15 +233,14 @@ public class InmemoryFOPS {
      * @return List of data
      * @since 1.0.0
      */
-    private static LinkedList applyPagination(PaginationCriteria criteria, LinkedList sortedList) {
+    private static List applyPagination(PaginationCriteria criteria, List sortedList) {
         if (criteria.getLimit() <= 0) {
             return sortedList;
         }
         int skipCount = (criteria.getPageNumber() - 1) * criteria.getLimit();
-        return (LinkedList)
-                sortedList.stream()
+        return (List) sortedList.stream()
                         .skip(skipCount)
                         .limit(criteria.getLimit())
-                        .collect(Collectors.toCollection(LinkedList::new));
+                        .collect(Collectors.toList());
     }
 }
