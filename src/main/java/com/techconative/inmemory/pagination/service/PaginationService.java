@@ -8,11 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+/**
+ * Filter, search, sort and paginate your data.<br/>
+ * PaginationService is the class to be extended to utilise the library.
+ *
+ * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.
+ */
 @Slf4j
 public abstract class PaginationService<T> implements IPaginationService {
 
     /**
-     * The central method to extend the library as a service.
+     * The central method to invoke the library as a service.
      *
      * @param criteria contains filter, search, sort and pagination constraints
      * @return PageResult of the provided data as per constraints
@@ -27,7 +33,8 @@ public abstract class PaginationService<T> implements IPaginationService {
     }
 
     /**
-     * Method to fetch data for processing
+     * Fetch data for processing<br/>
+     * Abstract method to be implemented.
      *
      * @return List of data
      * @since 1.0.0

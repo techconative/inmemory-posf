@@ -13,8 +13,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Filter, search, sort and paginate your data. PaginationService is the class to be extended to
- * utilise the library
+ * Filter, search, sort and paginate your data.<br/>
  *
  * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.
  */
@@ -24,8 +23,7 @@ public class InmemoryFOPS {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * The central method which gets the data and apply filter, search, sort and paginates based on
-     * criteria
+     * Applies given criteria on supplied data.
      *
      * @param rawData input data to apply criteria operations on
      * @param criteria contains filter, search, sort and pagination constraints
