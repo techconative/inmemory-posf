@@ -46,7 +46,7 @@ https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c72
 https://github.com/techconative/inmemory-posf/blob/77c1371e8993193dbf0aac299137aec888aa6c56/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L9-L28
 
 - *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
-- *limit* attribute denotes number of items that need to be displayed in a page If it is 0 then it will return all records .
+- *limit* attribute denotes number of items that need to be displayed in a page If it is 0 then it will return all records.
 - *column* attribute denotes name of the column to sort .
 - ***Sorting*** can be done in both way (ascending / descending) and is set using *sort* variable of type OrderingCriteria (Enum class that our plugin provides).
 - *pageNumber* attribute denotes the page number to be displayed after paginating to limit as mentioned.
