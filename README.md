@@ -17,16 +17,41 @@ So the best option is to go for InMemory pagination, where a server will return 
 
 ### How to use this plugin
 
+##### Approach 1
+
 - To use this plugin , just extend the class **PaginationService** and override the **getRawData()**  function such that it returns list of desired object.
 - *getRawData()* method will return the complete source data from which the plugin will take care of performing pagination and searching for you.
 
 Sample snippet:
 
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L17-L32
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L23-L34
 
 <br> <br>
 
+##### Approach 2
+
+- Directly call static methods of class InmemoryFOPS Class that the plugin provides by default.
+- use *applyFiltering*  which is static method in InmemoryFOPS for filtering and searching.
+- it takes List of Map and PaginationCriteria as parameters.
+- Can be used anywhere in your program depending on your use cases.
+
+Sample usage:
+
+```java
+  InmemoryFOPS.applyFiltering( PaginationCriteria criteria, List<Map<String, String>> rawData)
+```
+ 
+- Same way ,we can call *applySorting* and *applyPagination* static method of InmemoryFOPS to leverage its benefits.
+- PaginationCriteria changes for each use case.
+
+```java
+  InmemoryFOPS. applySorting(PaginationCriteria criteria, List<Map<String, String>> rawData);
+  InmemoryFOPS. applyPagination(PaginationCriteria criteria, List<Map<String, String>> rawData);
+```
+<br> <br>
+
 - Plugin provides two class **PaginationCriteria** and **PageResult**  to utilize the  pagination and filtering features on top of the database.
+ 
 
 https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L1-L37
 
@@ -40,7 +65,9 @@ https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5
 
 Sample snippet:
 
-(https://github.com/techconative/inmemory-pagination/blob/c16d8ee33307156664a961b30813548d922dd37e/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L25-L33)
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L65-L75
+
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/resources/cucumber/pagination/FeedTest.feature#L14-L31
 
 <br> <br>
 
@@ -64,12 +91,12 @@ Sample snippet:
 - Filtering is done by column name while search is performed across columns. Multiple values can be supplied at the same time.
 
 - & -> separates column names .
-- | -> separates multiple values and * -> indicates search across all columns .
+- \\| -> separates multiple values and * -> indicates search across all columns .
 - [] -> is placed after every List.
 - . -> represents nested
 
 ```java
-  criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
+  criteria.setFilter("multiMedia.[].name=CCCC&*=Vega\|vegas&userId=4051");
 ```
 ### Conventions to follow while setting the custom query for sorting
 
@@ -91,12 +118,17 @@ Sample snippet:
 
 snippet:
 
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PageResult.java#L1-L37
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/main/java/com/techconative/inmemory/pagination/modal/PageResult.java#L11-L27
 
-- Pagination service is called by instantiating object for the class that extends it.
+- *getPageResult* method is called by instantiating object for the class that extends it.
+
+
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L58
+
 - pagination criteria is set and passed as argument to Pagination service.
+
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L48-L53
+
 - Page Result is used to display the resulting desired list of objects.
 
-snippets:
-
-https://github.com/techconative/inmemory-pagination/blob/c16d8ee33307156664a961b30813548d922dd37e/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L59-L60
+https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/CucumberStepDefinitions.java#L80-L82
