@@ -1,10 +1,10 @@
-package com.techconative.inmemory.pagination.util;
+package com.techconative.posf.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.techconative.inmemory.pagination.modal.OrderingCriteria;
-import com.techconative.inmemory.pagination.modal.PageResult;
-import com.techconative.inmemory.pagination.modal.PaginationCriteria;
+import com.techconative.posf.modal.OrderingCriteria;
+import com.techconative.posf.modal.PageResult;
+import com.techconative.posf.modal.POSFCriteria;
 import exception.InvalidCriteriaException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -15,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Filter, search, sort and paginate your data.<br/>
  *
- * @see <a href="https://github.com/techconative/inmemory-pagination">Git repository</a> for usage.
+ * @see <a href="https://github.com/techconative/inmemory-posf">Git repository</a> for usage.
  */
 @Slf4j
-public class InmemoryFOPS {
+public class POSFUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -30,7 +30,7 @@ public class InmemoryFOPS {
      * @return List of result data with constraints applied
      * @since 1.0.0
      */
-    public static PageResult processData(List rawData, PaginationCriteria criteria) {
+    public static PageResult processData(List rawData, POSFCriteria criteria) {
         List<Map<String, String>> data = convert(rawData);
 
         if (criteria.getFilter() != null && !criteria.getFilter().isEmpty()) {
@@ -77,7 +77,7 @@ public class InmemoryFOPS {
      * @since 1.0.0
      */
     private static List<Map<String, String>> applyFiltering(
-            PaginationCriteria criteria, List<Map<String, String>> rawData) {
+            POSFCriteria criteria, List<Map<String, String>> rawData) {
         Map<String, Set<Pattern>> filterMap = convertFilterCriteria(criteria.getFilter());
         return rawData.stream()
                 .filter(row -> filterRow(row, filterMap))
@@ -207,7 +207,7 @@ public class InmemoryFOPS {
      * @since 1.0.0
      */
     private static List<Map<String, String>> applySorting(
-            PaginationCriteria criteria, List<Map<String, String>> filteredList) {
+            POSFCriteria criteria, List<Map<String, String>> filteredList) {
         if (criteria.getSort().equals(OrderingCriteria.DESC)) {
             return filteredList.stream()
                             .sorted(
@@ -233,7 +233,7 @@ public class InmemoryFOPS {
      * @return List of data
      * @since 1.0.0
      */
-    private static List applyPagination(PaginationCriteria criteria, List sortedList) {
+    private static List applyPagination(POSFCriteria criteria, List sortedList) {
         if (criteria.getLimit() <= 0) {
             return sortedList;
         }

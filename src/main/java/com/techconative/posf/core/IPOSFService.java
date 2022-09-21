@@ -1,14 +1,14 @@
-package com.techconative.inmemory.pagination.core;
+package com.techconative.posf.core;
 
-import com.techconative.inmemory.pagination.modal.PageResult;
-import com.techconative.inmemory.pagination.modal.PaginationCriteria;
+import com.techconative.posf.modal.PageResult;
+import com.techconative.posf.modal.POSFCriteria;
 
 /**
  * Interface of main class to be implemented to use the library
  *
  * @author Krishnan - Techconative
  */
-public interface IPaginationService {
+public interface IPOSFService {
 
     /**
      * The central method to extend the library as a service.
@@ -17,5 +17,5 @@ public interface IPaginationService {
      * @return PageResult of the provided data as per constraints
      * @since 1.0.0
      */
-    PageResult getPageResult(PaginationCriteria criteria);
+    PageResult getPageResult(POSFCriteria criteria);
 }

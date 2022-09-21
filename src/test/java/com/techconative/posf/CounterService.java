@@ -1,16 +1,16 @@
-package com.techconative.inmemory.pagination;
+package com.techconative.posf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techconative.inmemory.pagination.modal.*;
-import com.techconative.inmemory.pagination.service.PaginationService;
+import com.techconative.posf.modal.Counters;
+import com.techconative.posf.service.POSFService;
 import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /** CounterService implements library for processing src/test/java/resources/CounterData.json */
 @Slf4j
-public class CounterService extends PaginationService<Counters> {
+public class CounterService extends POSFService<Counters> {
 
     private static ObjectMapper mapper = new ObjectMapper();
 

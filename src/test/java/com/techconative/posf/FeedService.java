@@ -1,11 +1,12 @@
-package com.techconative.inmemory.pagination;
+package com.techconative.posf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techconative.inmemory.pagination.modal.Feed;
-import com.techconative.inmemory.pagination.service.PaginationService;
+import com.techconative.posf.modal.Feed;
+import com.techconative.posf.service.POSFService;
 import java.io.IOException;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * data provider</a>
  */
 @Slf4j
-public class FeedService extends PaginationService<Feed> {
+public class FeedService extends POSFService<Feed> {
 
     private static ObjectMapper mapper = new ObjectMapper();
 

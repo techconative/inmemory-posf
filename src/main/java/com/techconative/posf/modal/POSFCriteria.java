@@ -1,12 +1,12 @@
-package com.techconative.inmemory.pagination.modal;
+package com.techconative.posf.modal;
 
 import lombok.Getter;
 import lombok.Setter;
 
-/** PaginationCriteria class contains page, sort, filter and search constraints */
+/** POSFCriteria class contains page, sort, filter and search constraints */
 @Getter
 @Setter
-public class PaginationCriteria {
+public class POSFCriteria {
 
     /**
      * Number of items that need to to displayed in a page If it is 0 then it will return all

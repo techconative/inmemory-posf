@@ -1,4 +1,4 @@
-package com.techconative.inmemory.pagination.modal;
+package com.techconative.posf.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
