@@ -1,4 +1,4 @@
-package com.techconative.posf.modal;
+package com.techconative.posf.model;
 
 import java.util.List;
 

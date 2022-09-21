@@ -1,4 +1,4 @@
-package com.techconative.posf.modal;
+package com.techconative.posf.model;
 
 /** Order Criteria for sorting of data */
 public enum OrderingCriteria {

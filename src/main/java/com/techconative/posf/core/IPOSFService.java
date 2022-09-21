@@ -1,7 +1,7 @@
 package com.techconative.posf.core;
 
-import com.techconative.posf.modal.PageResult;
-import com.techconative.posf.modal.POSFCriteria;
+import com.techconative.posf.model.PageResult;
+import com.techconative.posf.model.POSFCriteria;
 
 /**
  * Interface of main class to be implemented to use the library

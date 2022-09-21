@@ -1,4 +1,4 @@
-package com.techconative.posf.modal;
+package com.techconative.posf.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package com.techconative.posf.service;
 
 import com.techconative.posf.core.IPOSFService;
-import com.techconative.posf.modal.PageResult;
-import com.techconative.posf.modal.POSFCriteria;
+import com.techconative.posf.model.PageResult;
+import com.techconative.posf.model.POSFCriteria;
 import com.techconative.posf.util.POSFUtil;
 import lombok.extern.slf4j.Slf4j;
 

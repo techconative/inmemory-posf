@@ -2,7 +2,7 @@ package com.techconative.posf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techconative.posf.modal.Student;
+import com.techconative.posf.model.Student;
 import com.techconative.posf.service.POSFService;
 import java.io.IOException;
 import java.util.List;

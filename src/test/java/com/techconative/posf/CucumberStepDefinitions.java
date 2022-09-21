@@ -1,9 +1,9 @@
 package com.techconative.posf;
 
 import com.techconative.posf.core.IPOSFService;
-import com.techconative.posf.modal.OrderingCriteria;
-import com.techconative.posf.modal.PageResult;
-import com.techconative.posf.modal.POSFCriteria;
+import com.techconative.posf.model.OrderingCriteria;
+import com.techconative.posf.model.PageResult;
+import com.techconative.posf.model.POSFCriteria;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
