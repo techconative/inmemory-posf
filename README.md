@@ -7,13 +7,15 @@ Modern day applications can have various sources of data that can extend beyond 
 - **F**iltering 
 
 **In Memory POSF** helps integrate these features into your application when interacting with any such data sources.  
-It is source agnostic and can be applied in any situation where handling large sets of Java Objects is necessary.
+It is source agnostic and can be applied on any situation when the above operations are required on structured(JSON) data is 
+necessary.
 
 ## Usage
 
 ### 1. Import the library into your project
 
-The library is published on [Central repository](https://search.maven.org/artifact/com.techconative/inmemory-posf/1.0.0/jar). Import it using your build system.  
+The library is published on [Central repository](https://search.maven.org/artifact/com.techconative/inmemory-posf/1.0.0/jar). 
+Import it using your build system.  
 
 > `maven`
 
@@ -77,7 +79,7 @@ Below are the conventions for the various operations supported:
 |:--:       | --        |
 | `&`       | separates multiple filters    |
 | `=`       | separates key values (key are column name to be filtered)  |
-| `*`       | place as key to perform search across all columns     |
+| `*`       | Represents any column including nested keys as well     |
 | `\|`       | separates multiple values in criteria     |
 | `[]`      | list of objects |
 | `.`       | nested object   |
@@ -104,7 +106,7 @@ Ordering has two criteria:
 - **sort** specifies the order to use.
 
 ```java
-criteria.setColumn("columnName");   
+criteria.setColumn("columnName");
 criteria.setSort(OrderingCriteria.ASC);   // OrderingCriteria.DESC for descending
 ```
 
@@ -140,7 +142,7 @@ List<Feed> resultData = pageResult.getData();               // retrieve processe
 ```
 
 ---
-### Alternate approach to usinng POSF library
+### Alternate approach to using POSF library
 
 If you have limitations in extending our service class don't worry, you can still use our library. 
 
