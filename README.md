@@ -46,12 +46,12 @@ https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c72
 https://github.com/techconative/inmemory-posf/blob/77c1371e8993193dbf0aac299137aec888aa6c56/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L9-L28
 
 - *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
-- Limiting the data return  is done through *setLimit* method in *PaginationCriteria* .
-- Data are sorted based on column mentioned in *setColumn* method .
-- ***Sorting*** can be done in both way (ascending / descending) and is set using *setSort* method using OrderingCriteria (Enum class that our plugin provides).
-- PageNumber  is set using *setPageNumber* method .
-- Custom Query for ***Filtering*** or ***searching*** can be used with *setFilter* method
-- All these methods can be call through instance of **PaginationCriteria** class.
+- *limit* attribute denotes number of items that need to be displayed in a page If it is 0 then it will return all records .
+- *column* attribute denotes name of the column to sort .
+- ***Sorting*** can be done in both way (ascending / descending) and is set using *sort* variable of type OrderingCriteria (Enum class that our plugin provides).
+- *pageNumber* attribute denotes the page number to be displayed after paginating to limit as mentioned.
+- *filter* attribute holds the query for filtering and searching.
+- All the getter and setter methods for these attributes can be called through instance of **PaginationCriteria** class.
 
 *Cucumber test case snippet for setFilter query for both search and filter*:
 
