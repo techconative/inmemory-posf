@@ -1,9 +1,9 @@
-package com.techconative.inmemory.pagination;
+package com.techconative.posf;
 
-import com.techconative.inmemory.pagination.core.IPaginationService;
-import com.techconative.inmemory.pagination.modal.OrderingCriteria;
-import com.techconative.inmemory.pagination.modal.PageResult;
-import com.techconative.inmemory.pagination.modal.PaginationCriteria;
+import com.techconative.posf.core.IPOSFService;
+import com.techconative.posf.model.OrderingCriteria;
+import com.techconative.posf.model.PageResult;
+import com.techconative.posf.model.POSFCriteria;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 public class CucumberStepDefinitions {
 
     PageResult pageResult = null;
-    PaginationCriteria criteria = null;
+    POSFCriteria criteria = null;
 
-    IPaginationService t = null;
+    IPOSFService t = null;
 
     @Given("Feed data")
     public void feedData() {
@@ -45,7 +45,7 @@ public class CucumberStepDefinitions {
 
     @And("Default Criteria")
     public void defaultCriteria() {
-        criteria = new PaginationCriteria();
+        criteria = new POSFCriteria();
 
         criteria.setLimit(100);
         criteria.setColumn("id");
