@@ -22,7 +22,7 @@ So the best option is to go for **Inmemory POSF**, where a server will return th
 - To use this plugin , just extend the class **PaginationService** and override the **getPageResult()**  function such that it returns list of desired object.
 - *getPageResult()* method will return the complete source data from which the plugin will take care of performing pagination and searching for you.
 
-
+*sample implemetation for getPageResult() method*:
 https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c7210302921807/src/test/java/com/techconative/inmemory/pagination/FeedService.java#L23-L34
 
 <br> <br>
@@ -33,7 +33,7 @@ https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c72
 - It takes List of data and PaginationCriteria as parameters.
 - Can be used anywhere in your program depending on your use cases.
 
-*Sample usage*:
+*Sample usage of processData() method*:
 
 ```java
   InmemoryFOPS.processData(List rawData, PaginationCriteria criteria);
@@ -42,6 +42,7 @@ https://github.com/techconative/inmemory-posf/blob/536ba7b1062edce986798a96c7c72
 
 - Plugin provides two class **PaginationCriteria** and **PageResult**  to utilize the  pagination and filtering features on top of the database.
 
+*PageCriteria Class*:
 https://github.com/techconative/inmemory-posf/blob/77c1371e8993193dbf0aac299137aec888aa6c56/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L9-L28
 
 - *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
