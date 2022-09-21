@@ -1,4 +1,4 @@
-package com.techconative.inmemory.pagination.modal;
+package com.techconative.posf.model;
 
 import lombok.Data;
 
@@ -7,5 +7,4 @@ public class DailyFields {
     public String id;
     public Integer likes;
     public Integer dislikes;
-
 }

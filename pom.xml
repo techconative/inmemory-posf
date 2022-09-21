@@ -5,18 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.techconative</groupId>
-    <artifactId>inmemory-pagination</artifactId>
-    <version>1.0.1</version>
+    <artifactId>inmemory-posf</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A library that helps page, filter, search and sort datasets.</description>
-    <url>https://github.com/techconative/inmemory-pagination</url>
+    <url>https://github.com/techconative/inmemory-posf</url>
 
     <licenses>
         <license>
@@ -35,9 +35,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/techconative/inmemory-pagination.git</connection>
-        <developerConnection>scm:git:ssh://github.com:techconative/inmemory-pagination.git</developerConnection>
-        <url>http://github.com/techconative/inmemory-pagination/tree/master</url>
+        <connection>scm:git:git://github.com/techconative/inmemory-posf.git</connection>
+        <developerConnection>scm:git:ssh://github.com:techconative/inmemory-posf.git</developerConnection>
+        <url>http://github.com/techconative/inmemory-posf/tree/master</url>
     </scm>
 
     <profiles>
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.0</version>
+            <version>1.3.0</version>
         </dependency>
     </dependencies>
 
@@ -188,8 +188,8 @@
                 <version>3.10.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>8</source>
+                    <target>8</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

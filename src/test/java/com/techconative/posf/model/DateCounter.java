@@ -1,8 +1,7 @@
-package com.techconative.inmemory.pagination.modal;
-
-import lombok.Data;
+package com.techconative.posf.model;
 
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class DateCounter {
