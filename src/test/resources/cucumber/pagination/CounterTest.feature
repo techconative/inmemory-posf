@@ -1,11 +1,15 @@
 Feature: Counter Deep nested values
 
-  Scenario: Deep Nested value like counter is 10
+  Background:
     Given Counter Data
-    When Key value "counters.[].yearMonth.[].dateCounter.[].likes" is "10"
-    Then Result size should be 2
+    And Default Criteria
 
-  Scenario: Deep Nested value like counter is 20 with non-existant search term
-    Given Counter Data
-    When Complex filtering criteria is "counters.[].yearMonth.[].dateCounter.[].likes=10&*=Vega|vegas"
-    Then Result size should be 0
+  Scenario Outline: Deep Nested filtering test in counter data
+    When Complex filtering criteria is <criteria>
+    Then Result size should be <expectedSize>
+    And Object identifier <objID> is present in <expectedObjsList>
+
+    Examples:
+      | criteria                                                                                               | expectedSize | objID | expectedObjsList |
+      | "counters.[].yearMonth.[].dateCounter.[].likes=10&counters.[].yearMonth.[].dateCounter.[].dislikes=20" | 2            | "id"  | "1347,1348"      |
+      | "counters.[].yearMonth.[].dateCounter.[].likes=10&*=Vega\|vegas"                                       | 0            | "id"  | ""               |

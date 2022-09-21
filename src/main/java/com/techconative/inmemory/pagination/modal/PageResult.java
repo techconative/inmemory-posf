@@ -1,6 +1,7 @@
 package com.techconative.inmemory.pagination.modal;
 
-import java.util.LinkedList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class PageResult<T> {
     private int totalCount;
 
     /** Array of custom object */
-    private LinkedList<T> data;
+    private List<T> data;
 
     /** This specifies the number of records that need to be returned for a page. */
     private int limit;

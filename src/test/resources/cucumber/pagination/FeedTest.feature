@@ -1,41 +1,31 @@
 Feature: Filtering on Feed data
 
-  Scenario: Name is bharath
+  Background:
     Given Feed data
-    When Key value "name" is "bharath"
-    Then Result size should be 1
+    And Default Criteria
 
-  Scenario: Name is sanjay OR neha
-    Given Feed data
-    When Key value "name" is "sanjay|neha"
-    Then Result size should be 40
+  Scenario Outline: Check if key <key> has <value> atleast once
+    When <key> has <value>
+    Then Result size should be <size>
+    And Object identifier <objID> is present in <expectedObjsList>
 
-  Scenario: Nested value multiMedia.name is "AAAA"
-    Given Feed data
-    When Key value "multiMedia.[].name" is "AAAA"
-    Then Result size should be 3
 
-  Scenario: Search for a URL
-    Given Feed data
-    When Key value "multiMedia.[].url" is "http://www.youtube.com/embed/TUT2-FEPMdc"
-    Then Result size should be 5
+    Examples:
+      | key                  | value                                      | size | objID | expectedObjsList                                                                                                                                                                                                                             |
+      | "name"               | "bharath"                                  | 1    | "id"  | "2137"                                                                                                                                                                                                                                       |
+      | "name"               | "sanjay\|neha"                             | 40   | "id"  | "2128,2127,2125,2124,2122,2121,2108,2105,2128,2127,2125,2124,2122,2121,2108,2105,2128,2127,2125,2124,2122,2121,2108,2105,2128,2127,2125,2124,2122,2121,2108,2105,2128,2127,2125,2124,2122,2121,2108,2105,"                                   |
+      | "multiMedia.[].name" | "AAAA"                                     | 3    | "id"  | "2137,2136,2135"                                                                                                                                                                                                                             |
+      | "multiMedia.[].url"  | "http://www.youtube.com/embed/TUT2-FEPMdc" | 5    | "id"  | "2138,2138,2138,2138,2138"                                                                                                                                                                                                                   |
+      | "createdAt"          | "2020-01-02"                               | 47   | "id"  | "2140,2139,2138,2137,2136,2135,2134,2133,2132,2140,2139,2138,2137,2136,2135,2134,2133,2132,2131,2130,2140,2139,2138,2137,2136,2135,2134,2133,2132,2140,2139,2138,2137,2136,2135,2134,2133,2132,2140,2139,2138,2137,2136,2135,2134,2133,2132" |
+      | "createdAt"          | "2020-01-02T10:54:07.609+00:00"            | 5    | "id"  | "2139,2139,2139,2139,2139"                                                                                                                                                                                                                   |
 
-  Scenario: Search for "Vega|vegas"
-    Given Feed data
-    When Search terms are "Vega|vegas"
-    Then Result size should be 15
 
-  Scenario: Filer by partial date
-    Given Feed data
-    When Key value "createdAt" is "2020-01-02"
-    Then Result size should be 47
+  Scenario Outline: Complex filter criteria in Feed data
+    When Complex filtering criteria is <criteria>
+    Then Result size should be <expectedSize>
+    And Object identifier <objID> is present in <expectedObjsList>
 
-  Scenario: Filer by complete date
-    Given Feed data
-    When Key value "createdAt" is "2020-01-02T10:54:07.609+00:00"
-    Then Result size should be 5
-
-  Scenario: Complex filtering and search in single operation
-    Given Feed data
-    When Complex filtering criteria is "multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051"
-    Then Result size should be 1
+    Examples:
+      | criteria                                            | expectedSize | objID | expectedObjsList                                                             |
+      | "*=Vega\|vegas"                                     | 15           | "id"  | "1096,1096,1096,1096,1096,2101,2101,2101,2101,2101,2137,2137,2137,2137,2137" |
+      | "multiMedia.[].name=CCCC&*=Vega\|vegas&userId=4051" | 1            | "id"  | "2137"                                                                       |
