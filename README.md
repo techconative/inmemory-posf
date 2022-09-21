@@ -1,9 +1,19 @@
-# In Memory-POSF
+# In Memory POSF
 
+Modern day applications can have various sources of data that can extend beyond traditional DBMS. Often, these datasources don't include any advanced features that a typical ORM provides, such as: (**POSF**)
+- **P**agination
+- **O**rdering
+- **S**earching, and 
+- **F**iltering 
 
-Modern day application's datasource can cut across corners apart from DB and at times these datasources dosen't provide out of the box features that are provided in ORM like **P**agination, **O**rdering, **S**earching and **F**iltering (**POSF**) features. **In Memory POSF** library has out of the box features that can simplify your task of implementing these requirements.
+**In Memory POSF** helps integrate these features into your application when interacting with any such data sources.  
+It is source agnostic and can be applied in any situation where handling large sets of Java Objects is necessary.
 
-### Import the library into your project
+## Usage
+
+### 1. Import the library into your project
+
+The library is published on [Central repository](https://search.maven.org/artifact/com.techconative/inmemory-posf/1.0.0/jar). Import it using your build system.  
 
 > `maven`
 
@@ -23,109 +33,126 @@ dependencies {
   implementation 'com.techconative.inmemory-posf:1.0.0'
 }
 ```
-### Easy to use
 
-#### Extend service class
 
-- Extend the class **PaginationService** from the package **com.techconative.posf.service** and override the **getRawData()**  method. 
-- **getRawData()** method will return the list of objects for which POSF operations are to be performed. 
+### 2. Define criteria
 
-Sample snippet:
+**POSFCriteria** class lets you set the criteria.  
+
+`Sample criteria`
+```java
+POSFCriteria criteria = new POSFCriteria();
+
+// 1.  Filtering and search
+criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
+
+/* 2. Order filtered data
+ * Column name to order by
+*/ 
+criteria.setColumn("id");
+// Ordering criteria. Accepts ASC / DESC.
+criteria.setSort(OrderingCriteria.ASC);
+
+/* 3. Paginate ordered data
+ * Number of items that need to to displayed in a page. 
+ * If it is 0 then it will return all records.
+*/  
+criteria.setLimit(10);
+
+// 4. Offset page to be returned after paginating the data.
+criteria.setPageNumber(1);
+```
+
+
+Below are the conventions for the various operations supported:
+
+#### I. Filter and Search
+
+> Filtering is per column name while search is performed across columns.  
+> Multiple values can be supplied at the same time.
+
+##### Operators
+
+| Operator  | Usage     |
+|:--:       | --        |
+| `&`       | separates multiple filters    |
+| `=`       | separates key values (key are column name to be filtered)  |
+| `*`       | place as key to perform search across all columns     |
+| `\|`       | separates multiple values in criteria     |
+| `[]`      | list of objects |
+| `.`       | nested object   |
+
+
+Setting filter/search criteria :
+```java
+criteria.setFilter("multiMedia.[].name=CCCC&*=Vega\|vegas&userId=4051");
+```
+
+More criteria patterns:
+```cucumber
+name=sanjay\|neha  
+createdAt="2020-01-02T10:54:07.609+00:00  
+multiMedia.[].like=10  
+*=Vega\|vegas  
+counters.[].yearMonth.[].dateCounter.[].likes=10&*=Vega\|vegas  
+```
+
+#### II. Ordering
+
+Ordering has two criteria:
+- **column** specifies the column used for ordering.
+- **sort** specifies the order to use.
+
+```java
+criteria.setColumn("columnName");   
+criteria.setSort(OrderingCriteria.ASC);   // OrderingCriteria.DESC for descending
+```
+
+
+#### III. Pagination
+
+Paginating has two criteria:
+- **limit** specifies the max number of results in a page
+- **pageNumber** selects the page number to return after pagination
+
+```java
+criteria.setLimit(10);
+criteria.setPageNumber(1);
+``` 
+
+
+### 3. POSF as a service
+
+- Extend the class **POSFService** from the package **com.techconative.posf.service** and override the **getRawData()**  method. 
+- **getRawData()** method must return a list of objects for which POSF operations are to be performed. 
+
+> Supply your data through `getRawData()`:
 
 https://github.com/techconative/inmemory-posf/blob/5be95eca4a8fbaab97cdc5ae4cb0d50cd936ca42/src/test/java/com/techconative/posf/FeedService.java#L23-L34
 
-#### Define criteria
 
-**POSFCriteria** class can be used to set the criteria. Please follow the conventions for various operations as below:
-
-##### Conventions to follow while setting the custom query for searching
-
-- Search query is set with * in place of column_name unlike we use in filter query.
-
-```java
- criteria.setFilter("*=4051"); //searching
- criteria.setFilter("*=4051|5021"); //searching multiple values using or
-```
-
-##### Conventions to follow while setting the custom query for filtering
-
-- For  filter query column name is given inplace of *.
-
-```java
-  criteria.setFilter("userId=4051"); //filtering
-```
-
-- Filtering is done by column name while search is performed across columns. Multiple values can be supplied at the same time.
-
-- & -> separates column names .
-- \\| -> separates multiple values and * -> indicates search across all columns .
-- [] -> is placed after every List.
-- . -> represents nested
-
-```java
-  criteria.setFilter("multiMedia.[].name=CCCC&*=Vega\|vegas&userId=4051");
-```
-#### Conventions to follow while setting the custom query for sorting
-
-
-```java
-   criteria.setSort(OrderingCriteria.ASC);   /// OrderingCriteria.DESC for descending
-```
-
-> Note:  Custom query and column name in *setColumn* method is passed as string in double quotes.
-
-#### Conventions to follow while setting the custom query for pagination and result
-
-```java
- criteria.setLimit(10);
- criteria.setPageNumber(1);
-``` 
-
-**Example**
-```java
-    POSFCriteria criteria = new POSFCriteria();
-
-    // 1.  Filtering and search
-    criteria.setFilter("multiMedia.[].name=CCCC&*=Vega|vegas&userId=4051");
-
-    /* 2. Sort filtered data
-     * Column name to sort by
-    */ 
-    criteria.setColumn("id");
-    // Sorting criteria. Accepts ASC / DESC.
-    criteria.setSort(OrderingCriteria.ASC);
-
-    /* 3. Paginate sorted data
-     * Number of items that need to to displayed in a page. 
-     * If it is 0 then it will return all records.
-    */  
-    criteria.setLimit(10);
-
-    // 4. Offset page to be returned after paginating the data.
-    criteria.setPageNumber(1);
-```
-
-#### Apply criteria & Using the Results
+### 4. Apply criteria and fetch processed data
 
 ```java
 IPaginationService service = new FeedService();
-PageResult pageResult = service.getPageResult(criteria);
-List<Feed> resultData = pageResult.getData();
+PageResult pageResult = service.getPageResult(criteria);    // processing data with given criteria
+List<Feed> resultData = pageResult.getData();               // retrieve processed data
 ```
 
-#### Alternate Approach
+---
+### Alternate approach to usinng POSF library
 
-If you have limitations to extend our service class don't worry you can still use our library. 
+If you have limitations in extending our service class don't worry, you can still use our library. 
 
-- **POSFUtil** static method **processData** can be invoked along with your list of objects and the criteria.
+- **POSFUtil**'s static method **processData()** can be invoked with your list of objects and criteria.
 
 Sample usage:
 
 ```java
-  List rawData;
-  POSFCriteria criteria;
-  /*
-   * Your Implemenation
-   */
-  POSFUtil.processData(rawData, criteria);
+List rawData;
+POSFCriteria criteria;
+/*
+ * Your Implemenation
+ */
+List resultData = POSFUtil.processData(rawData, criteria);
 ```
