@@ -51,9 +51,8 @@ Sample usage:
 <br> <br>
 
 - Plugin provides two class **PaginationCriteria** and **PageResult**  to utilize the  pagination and filtering features on top of the database.
- 
 
-https://github.com/techconative/inmemory-pagination/blob/d2199f113ad935eadefaeb5b7943fdbc17c321c0/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L1-L37
+https://github.com/techconative/inmemory-posf/blob/77c1371e8993193dbf0aac299137aec888aa6c56/src/main/java/com/techconative/inmemory/pagination/modal/PaginationCriteria.java#L9-L28
 
 - *PaginationCriteria* helps in setting criteria for pagination depending on your use case.
 - Limiting the data return  is done through *setLimit* method in *PaginationCriteria* .
