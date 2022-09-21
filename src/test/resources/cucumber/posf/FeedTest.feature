@@ -9,7 +9,6 @@ Feature: Filtering on Feed data
     Then Result size should be <size>
     And Object identifier <objID> is present in <expectedObjsList>
 
-
     Examples:
       | key                  | value                                      | size | objID | expectedObjsList                                                                                                                                                                                                                             |
       | "name"               | "bharath"                                  | 1    | "id"  | "2137"                                                                                                                                                                                                                                       |

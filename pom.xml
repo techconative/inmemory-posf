@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.techconative</groupId>
-    <artifactId>inmemory-pagination</artifactId>
-    <version>1.0.1</version>
+    <artifactId>inmemory-posf</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -16,7 +16,7 @@
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A library that helps page, filter, search and sort datasets.</description>
-    <url>https://github.com/techconative/inmemory-pagination</url>
+    <url>https://github.com/techconative/inmemory-posf</url>
 
     <licenses>
         <license>
@@ -35,9 +35,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/techconative/inmemory-pagination.git</connection>
-        <developerConnection>scm:git:ssh://github.com:techconative/inmemory-pagination.git</developerConnection>
-        <url>http://github.com/techconative/inmemory-pagination/tree/master</url>
+        <connection>scm:git:git://github.com/techconative/inmemory-posf.git</connection>
+        <developerConnection>scm:git:ssh://github.com:techconative/inmemory-posf.git</developerConnection>
+        <url>http://github.com/techconative/inmemory-posf/tree/master</url>
     </scm>
 
     <profiles>
