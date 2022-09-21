@@ -135,7 +135,7 @@ https://github.com/techconative/inmemory-posf/blob/5be95eca4a8fbaab97cdc5ae4cb0d
 
 ```java
 IPaginationService service = new FeedService();
-PageResult pageResult = service.getPageResult(criteria);    // processing data with given criteria
+PageResult pageResult = service.getPageResult(criteria);    // processing data with defined criteria
 List<Feed> resultData = pageResult.getData();               // retrieve processed data
 ```
 
@@ -154,5 +154,6 @@ POSFCriteria criteria;
 /*
  * Your Implemenation
  */
-List resultData = POSFUtil.processData(rawData, criteria);
+PageResult pageResult = POSFUtil.processData(rawData, criteria);    // processing data with defined criteria
+List<Feed> resultData = pageResult.getData();                       // retrieve processed data
 ```
