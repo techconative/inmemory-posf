@@ -3,7 +3,7 @@
 
 ### Problem Statement
 
-Struck with Database with no filtering,searching and pagination features?.
+Struck with Datasource with no filtering,searching and pagination features?.
 UI is feeling Hard to handle bulk of data?.
 We provide you the best solution to overcome these issues with minimal overhead.
 
