@@ -159,3 +159,5 @@ POSFCriteria criteria;
 PageResult pageResult = POSFUtil.processData(rawData, criteria);    // processing data with defined criteria
 List<Feed> resultData = pageResult.getData();                       // retrieve processed data
 ```
+---
+### An open source initiative from http://techconative.com
